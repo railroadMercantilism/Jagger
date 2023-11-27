@@ -7,8 +7,11 @@ import com.jagger.jagger_monolith.Expense;
 
 @Service
 public class ExpenseService {
-
     private final List<Expense> expenses = new ArrayList<>();
+
+    public List<Expense> getAllExpenses() {
+        return new ArrayList<>(expenses);
+    }
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
@@ -19,5 +22,11 @@ public class ExpenseService {
         expenses.add(updatedExpense);
     }
 
-    
+    public void deleteExpense(Integer expenseId) {
+        expenses.removeIf(e -> e.getId().equals(expenseId));
+    }
+
+    public Expense getExpenseById(Integer expenseId) {
+        return expenses.stream().filter(e -> e.getId().equals(expenseId)).findFirst().orElse(null);
+    }
 }

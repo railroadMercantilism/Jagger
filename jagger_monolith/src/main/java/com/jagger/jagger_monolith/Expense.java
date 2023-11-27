@@ -10,6 +10,11 @@ public class Expense {
     private String description;
     private LocalDate date;
 
+    public Expense() {
+        this.id = count.incrementAndGet();
+        this.date = LocalDate.now();
+    }
+
     public Expense(float amount, String description) {
         this.id = count.incrementAndGet();
         this.amount = amount;
