@@ -1,2 +1,6 @@
 # Jagger
-Jagger the Accountant
+Jagger the Accountant!
+------------------------
+Version Information
+
+--------------------
