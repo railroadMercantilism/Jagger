@@ -14,12 +14,12 @@ import com.jagger.jagger_monolith.Service.ExpenseService;
 
 @Controller
 @RequestMapping("/expenses")
-public class ExpenseController {
+public class ExpanseController {
 
     private final ExpenseService expenseService;
 
     @Autowired
-    public ExpenseController(ExpenseService expenseService) {
+    public ExpanseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
 

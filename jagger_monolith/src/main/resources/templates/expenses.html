@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+
+        }
+
+        header {
+            background-color: #ff8c00;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var allData = [];
+    </script>
+
+
+</head>
+
+<body>
+
+    <header>
+        <h1>Expense Tracker</h1>
+    </header>
+
+    <main>
+        <h3>Add an Expense</h3>
+        <div>
+            <form th:action="@{/expenses/add}" th:object="${newExpense}" method="post">
+                <input type="number" th:field="*{amount}" placeholder="Amount" min="0" step="0.01" />
+                <input type="text" th:field="*{description}" placeholder="Description" />
+                <button type="submit">Add</button>
+            </form>
+        </div>
+        <h2>Expenses</h2>
+        <div>
+            <ul>
+                <li th:each="expense : ${expenses}">
+                    <span th:text="${expense.description}">Description</span>: <br>
+                    $<span th:text="${expense.amount}">Amount</span> on
+                    <span th:text="${expense.date}">Date</span>,
+                    <br>
+                    <a th:href="@{/expenses/edit/{id}(id=${expense.id})}">Edit</a>
+                    <a th:href="@{/expenses/delete/{id}(id=${expense.id})}">Delete</a>
+                </li>
+            </ul>
+        </div>
+
+        <canvas id="expenseChart" width="400" height="400"></canvas>
+        <h2>Pie Chart</h2>
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                
+                /*[# th:each="expense : ${expenses}"]*/
+                var specificData = ["[(${expense.description})]", "[(${expense.amount})]"];
+                allData.push(specificData);
+                /*[/]*/
+
+                var ctx = document.getElementById("expenseChart").getContext("2d");
+
+                var expensePieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: allData.map(function (item) {
+                        return item[0]; // Label is the first element in each inner array
+                    }),
+                    datasets: [{
+                        data: allData.map(function (item) {
+                            return item[1]; // Data value is the second element in each inner array
+                        }),
+                        backgroundColor: getRandomColors(allData.length),
+                    }]
+                },
+            });
+
+
+        function getRandomColors(numColors) {
+                    var colors = [];
+                    for (var i = 0; i < numColors; i++) {
+                        colors.push(getRandomColor());
+                    }
+                    return colors;
+                }
+
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+            /*]]>*/
+            </script>
+        </div>
+        
+    </main>
+
+</body>
+
+</html>
